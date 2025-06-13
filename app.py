@@ -7,12 +7,11 @@ Original file is located at
     https://colab.research.google.com/drive/1ZWhyx8FRePiynxOw21qvi-hI5TJ6tygA
 """
 
-from flask import Flask, request, jsonify
+
 import pandas as pd
 import joblib
 import os
 
-app = Flask(__name__)
 
 model = joblib.load('model.pkl')
 le_group = joblib.load('le_group.pkl')
@@ -30,12 +29,10 @@ def predict_patient(df):
     risk_cat_label = le_cat.inverse_transform([risk_cat_class])[0]
     return risk_group_label, risk_cat_label
 
-@app.route('/predict', methods=['POST'])
+
 def predict():
     data = request.json
     df = pd.DataFrame([data])
     risk_group, risk_category = predict_patient(df)
     return jsonify({'risk_group': risk_group, 'risk_category': risk_category})
 
-if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
