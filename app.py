@@ -30,9 +30,5 @@ def predict_patient(df):
     return risk_group_label, risk_cat_label
 
 
-def predict():
-    data = request.json
-    df = pd.DataFrame([data])
-    risk_group, risk_category = predict_patient(df)
-    return jsonify({'risk_group': risk_group, 'risk_category': risk_category})
+
 
